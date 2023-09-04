@@ -182,16 +182,16 @@ console.log(myTruck.tow(1000));
 // Викликаємо метод tow з вагою більшою за towingCapacity
 console.log(myTruck.tow(200000));
 // Додаємо метод drive для прототипу Car, який збільшує kilometers на передане число, та виводить Подорожуємо <kilometers> кілометрів у <brand> <model>.
-function drive(num) {
+Car.prototype.drive = function (num) {
   return `Подорожуємо ${(this.mileage += num)} кілометрів у ${this.brand} ${
     this.model
   }`;
-}
+};
 // Використовуємо bind для зв'язування методу drive з конкретним об'єктом car.
 
 // Це створює нову функцію, в якій this постійно встановлено на car, незалежно від того, як функцію викликають.
 // Викликаємо функцію зі значенням 100,
-const bindFunc = drive.bind(car);
+let bindFunc = car.drive.bind(car);
 
 console.log(bindFunc(100));
 /*
@@ -210,7 +210,7 @@ console.log(bindFunc(100));
 function ElectricCar(brand, model, year, mileage, batteryCapacity) {
   // Перевіряємо, чи функцію було викликано з new, якщо ні виволимо помилку "Конструктор має бути викликаний з 'new'"
   if (!new.target) {
-    return "Конструктор має бути викликаний з 'new'";
+    throw new Error("Конструктор має бути викликаний з 'new'");
   }
   // Викликаємо Car.call та передаємо в нього this, brand, model, year, mileage
   Car.call(this, brand, model, year, mileage);
@@ -236,6 +236,6 @@ ElectricCar.prototype.toString = function () {
  * | batteryCapacity | 100               |
  */
 
-const tesla = new ElectricCar("Tesla", "Model S", 2020, 10000, 100);
+let tesla = new ElectricCar("Tesla", "Model S", 2020, 10000, 100);
 // Викликаємо метод toString об'єкту tesla та виводимо в консоль
 console.log(tesla.toString());
